@@ -1,0 +1,14 @@
+{
+  "name": "书名1",
+  "introduce": "介绍1",
+  "author": "作者1",
+  "publisher": "出版社1",
+  "publishDate": "出版日期1",
+  "pages": "页数1",
+  "types": ["类别1", "类别2"],
+  "poster": "封面1",
+  "price": "售价1",
+  "discountPrice": "折扣价1",
+  "stock": "库存1",
+  "salesVolume": "销量1"
+}
