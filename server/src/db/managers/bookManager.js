@@ -28,7 +28,8 @@ const bookManager = {
         name: { $regex: reg },
       })
         .skip((page - 1) * pageSize)
-        .limit(pageSize);
+        .limit(pageSize)
+        .sort({$natural: -1});
 
       count = await BookModel.find({
         name: { $regex: reg },
@@ -38,13 +39,13 @@ const bookManager = {
         types: { $in: [reg] },
       })
         .skip((page - 1) * pageSize)
-        .limit(pageSize);
+        .limit(pageSize)
+        .sort({$natural: -1});
 
       count = await BookModel.find({
         types: { $in: [reg] },
       }).countDocuments();
     }
-
     return { count, books };
   },
 };

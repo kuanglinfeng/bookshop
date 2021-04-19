@@ -1,6 +1,6 @@
 const Express = require('express');
 const cors = require('cors');
-const { bookRoute } = require('./routes');
+const { bookRoute, uploadRoute } = require('./routes');
 
 const app = Express();
 
@@ -24,6 +24,11 @@ app.use(cors(corsOptionsDelegate));
 app.use(Express.json());
 
 app.use('/api/admin/book', bookRoute);
+
+app.use('/api/admin/upload', uploadRoute);
+
+// 访问上传的静态文件
+app.use('/upload', Express.static('public/upload'))
 
 app.listen(port, () => {
   console.log(`服务运行在：http://localhost:${port}`);

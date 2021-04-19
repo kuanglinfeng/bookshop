@@ -3,8 +3,9 @@ import { HashRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { UnorderedListOutlined, FormOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import List from 'components/List';
-import BookForm from 'components/BookForm';
+import List from 'pages/book/List';
+import Add from 'pages/book/Add';
+import Edit from 'pages/book/Edit';
 
 const { Sider, Content, Header } = Layout;
 
@@ -47,7 +48,7 @@ function App() {
                 <Link to="/book/list">书籍列表</Link>
               </Menu.Item>
               <Menu.Item key="2" icon={<FormOutlined />}>
-                <Link to="add">添加书籍</Link>
+                <Link to="/book/add">添加书籍</Link>
               </Menu.Item>
             </Menu>
           </Sider>
@@ -70,7 +71,10 @@ function App() {
                   <List />
                 </Route>
                 <Route path="/book/add">
-                  <BookForm />
+                  <Add />
+                </Route>
+                <Route path="/book/edit/:id">
+                  <Edit />
                 </Route>
               </Switch>
             </Content>

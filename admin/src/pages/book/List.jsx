@@ -1,23 +1,36 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Table, Button, message, Card, Popconfirm } from 'antd';
-import api from 'apis';
-import day from 'tools/day';
+import dayjs from 'dayjs';
+import api from 'api';
 import Loading from 'components/Loading';
+import config from '../../config';
+
+const { baseURL } = config;
+
+const tempCoverImage = 'https://www.china-journal.net/uploads/qkimg/15659379685d565130b32a4.jpg';
 
 function List() {
+
+  const history = useHistory();
+
   const [books, setBooks] = useState();
   const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10, total: 0 });
+
+  const goToEditPage = (id) => {
+    history.push(`/book/edit/${id}`);
+  }
 
   const columns = [
     {
       title: '封面',
       dataIndex: 'coverImage',
       key: 'coverImage',
-      render() {
+      render(url) {
         return (
           <Card
             style={{ width: 50, height: 50 }}
-            cover={<img alt="封面" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+            cover={url ? <img alt="封面" src={`${baseURL}/upload/${url}`} /> : <img alt="封面" src={tempCoverImage} />}
           />
         );
       },
@@ -26,11 +39,6 @@ function List() {
       title: '书名',
       dataIndex: 'name',
       key: 'name',
-    },
-    {
-      title: '简介',
-      dataIndex: 'introduce',
-      key: 'introduce',
     },
     {
       title: '作者',
@@ -47,7 +55,7 @@ function List() {
       dataIndex: 'publishDate',
       key: 'publishDate',
       render(date) {
-        return <span>{day.getDate(date)}</span>;
+        return <span>{ dayjs(date).format('YYYY年MM月DD日') }</span>;
       },
     },
     {
@@ -101,7 +109,7 @@ function List() {
 
         return (
           <>
-            <Button type="primary">编辑</Button>
+            <Button type="primary" onClick={() => goToEditPage(record._id)}>编辑</Button>
             <Popconfirm title="确定删除这本书吗？" onConfirm={handleConfirm} okText="是" cancelText="否">
               <Button type="danger">删除</Button>
             </Popconfirm>
@@ -140,6 +148,7 @@ function List() {
       pagination={{ ...pageInfo, showSizeChanger: true, onShowSizeChange }}
       dataSource={books}
       onChange={handleChange}
+      bordered
     />
   );
 }

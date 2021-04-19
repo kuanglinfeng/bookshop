@@ -10,6 +10,7 @@
 ## 数据结构
 
 书：
+- 基础信息
 1. 书名(name - string)
 2. 简介(introduce - string)
 3. 作者(author - string)
@@ -18,6 +19,7 @@
 6. 页数(pages - number)
 7. 类别(types - string[])
 8. 封面(coverImage - string)
+- 售卖信息
 9. 售价(price - number)
 10. 折扣价(discountPrice - number)
 11. 库存(stock - number)
