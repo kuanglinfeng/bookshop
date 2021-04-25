@@ -16,34 +16,34 @@ const bookManager = {
   async findById(id) {
     return await BookModel.findById(id);
   },
-  async find({ page = 1, pageSize = 10, keywordProp = 'name', keyword }) {
+  async find({ page = 1, pageSize = 10, keywordProp = 'name', keywordValue }) {
     let books = [];
     let count = 0;
     page = Number(page);
     pageSize = Number(pageSize);
     // 忽视大小写
-    const reg = new RegExp(keyword, 'i');
-    if (keywordProp === 'name') {
+    const reg = new RegExp(keywordValue, 'i');
+    if (keywordProp === 'types') {
       books = await BookModel.find({
-        name: { $regex: reg },
+        types: { $in: [reg] },
       })
         .skip((page - 1) * pageSize)
         .limit(pageSize)
         .sort({$natural: -1});
 
       count = await BookModel.find({
-        name: { $regex: reg },
+        types: { $in: [reg] },
       }).countDocuments();
-    } else if (keywordProp === 'types') {
+    } else {
       books = await BookModel.find({
-        types: { $in: [reg] },
+        [keywordProp]: { $regex: reg },
       })
         .skip((page - 1) * pageSize)
         .limit(pageSize)
         .sort({$natural: -1});
 
       count = await BookModel.find({
-        types: { $in: [reg] },
+        name: { $regex: reg },
       }).countDocuments();
     }
     return { count, books };

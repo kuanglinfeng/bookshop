@@ -15,6 +15,8 @@ const bookSchema = new Mongoose.Schema(
     discountPrice: Number,
     stock: Number,
     salesVolume: Number,
+    // 是否上架
+    isAdded: Boolean,
   },
   { versionKey: false },
 );

@@ -1,3 +1,4 @@
 const bookManager = require('./bookManager');
+const adminManager = require('./adminManager');
 
-module.exports = { bookManager };
+module.exports = { bookManager, adminManager };

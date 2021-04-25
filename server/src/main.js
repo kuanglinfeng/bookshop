@@ -1,6 +1,7 @@
 const Express = require('express');
 const cors = require('cors');
-const { bookRoute, uploadRoute } = require('./routes');
+const { bookRoute, uploadRoute, adminAuthRoute } = require('./routes');
+
 
 const app = Express();
 
@@ -26,6 +27,8 @@ app.use(Express.json());
 app.use('/api/admin/book', bookRoute);
 
 app.use('/api/admin/upload', uploadRoute);
+
+app.use('/api/admin/auth', adminAuthRoute);
 
 // 访问上传的静态文件
 app.use('/upload', Express.static('public/upload'))

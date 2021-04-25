@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Table, Button, message, Card, Popconfirm } from 'antd';
+import { Table, Button, message, Card, Popconfirm, Switch } from 'antd';
 import dayjs from 'dayjs';
+import produce from 'immer';
 import api from 'api';
+import config from 'config';
+import useGetColumnSearchProps from 'hooks/useGetColumnSearchProps';
 import Loading from 'components/Loading';
-import config from '../../config';
 
 const { baseURL } = config;
 
@@ -13,13 +15,9 @@ const tempCoverImage = 'https://www.china-journal.net/uploads/qkimg/15659379685d
 function List() {
 
   const history = useHistory();
-
   const [books, setBooks] = useState();
   const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10, total: 0 });
-
-  const goToEditPage = (id) => {
-    history.push(`/book/edit/${id}`);
-  }
+  const getColumnSearchProps = useGetColumnSearchProps();
 
   const columns = [
     {
@@ -39,16 +37,19 @@ function List() {
       title: '书名',
       dataIndex: 'name',
       key: 'name',
+      ...getColumnSearchProps('name'),
     },
     {
       title: '作者',
       dataIndex: 'author',
       key: 'author',
+      ...getColumnSearchProps('author'),
     },
     {
       title: '出版社',
       dataIndex: 'publisher',
       key: 'publisher',
+      ...getColumnSearchProps('publisher'),
     },
     {
       title: '出版日期',
@@ -94,6 +95,14 @@ function List() {
       sorter: (a, b) => a.salesVolume - b.salesVolume,
     },
     {
+      title: '是否上架',
+      dataIndex: 'isAdded',
+      key: 'isAdded',
+      render(isAdded, record) {
+        return <Switch checked={isAdded} onChange={() => handleAddedSwitch(record, !isAdded)} />
+      }
+    },
+    {
       title: '操作',
       key: 'action',
       render: (text, record) => {
@@ -119,9 +128,21 @@ function List() {
     },
   ];
 
-  useEffect(() => {
-    handleChange({ current: 1, pageSize: 10 });
-  }, []);
+  const goToEditPage = (id) => {
+    history.push(`/book/edit/${id}`);
+  }
+
+  const handleAddedSwitch = async (record, status) => {
+    try {
+      setBooks(produce(books, (draftBooks) => {
+        draftBooks.find(book => book._id === record._id).isAdded = status;
+      }));
+      await api.putAddedStatus(record, status);
+      message.success(`${status ? '上' : '下'}架成功！`);
+    } catch (error) {
+      message.success(`${status ? '上' : '下'}架失败！`);
+    }
+  }
 
   const handleChange = async (pagination) => {
     const { current: page, pageSize } = pagination;
@@ -138,6 +159,10 @@ function List() {
   const onShowSizeChange = async (current, pageSize) => {
     await handleChange({ current, pageSize });
   };
+
+  useEffect(() => {
+    handleChange({ current: 1, pageSize: 10 });
+  }, []);
 
   if (!books) return <Loading />;
 

@@ -1,6 +1,7 @@
 import axios from 'tools/axios';
 
 const BOOK_API_PATH = '/api/admin/book';
+const AUTH_PATH = '/api/admin/auth';
 
 const api = {
   async getPageBooks(page, pageSize) {
@@ -21,6 +22,24 @@ const api = {
   },
   async editBook(id, book) {
     const { data } = await axios.put(`${BOOK_API_PATH}/${id}`, book);
+    return data;
+  },
+  async putAddedStatus(book, isAdded) {
+    const { _id: id, ...rest } = book;
+    const newBook = { ...rest, isAdded };
+    const { data } = await this.editBook(id, newBook);
+    return data;
+  },
+  async login(admin) {
+    const { data } = await axios.post(`${AUTH_PATH}/login`, admin);
+    return data;
+  },
+  async auth(token) {
+    const { data } = await axios.get(AUTH_PATH, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+      }
+    });
     return data;
   }
 };

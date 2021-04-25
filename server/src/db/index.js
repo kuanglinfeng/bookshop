@@ -1,5 +1,6 @@
 const Mongoose = require('mongoose');
 const BookModel = require('./models/BookModel');
+const AdminModel = require('./models/AdminModel');
 
 Mongoose.connect('mongodb://localhost:27017/bookshop', {
   useNewUrlParser: true,
@@ -7,4 +8,4 @@ Mongoose.connect('mongodb://localhost:27017/bookshop', {
   useUnifiedTopology: true,
 }).then(() => console.log('连接数据库成功'));
 
-module.exports = { BookModel };
+module.exports = { BookModel, AdminModel };

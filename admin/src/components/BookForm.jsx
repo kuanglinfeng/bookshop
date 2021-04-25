@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Button, message, Form, Input } from 'antd';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
+import Switch from './Switch';
 import TypesInput from './TypesInput';
 import ImageUploader from './ImageUploader';
 import DatePicker from './DatePicker';
@@ -124,6 +125,10 @@ const BookForm = ({ initialBook, onSubmit }) => {
 
         <Form.Item label="销量" name="salesVolume">
           <Input type="number" />
+        </Form.Item>
+
+        <Form.Item label="是否上架" name="isAdded">
+          <Switch />
         </Form.Item>
 
         <Form.Item label="封面图" name="coverImage">
