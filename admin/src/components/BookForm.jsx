@@ -38,7 +38,6 @@ const formItemLayout = {
 };
 
 const BookForm = ({ initialBook, onSubmit }) => {
-  
   const history = useHistory();
 
   const onFinish = async (book) => {
@@ -73,16 +72,11 @@ const BookForm = ({ initialBook, onSubmit }) => {
       }
     }
     return fields;
-  }
+  };
 
   return (
     <Container>
-      <Form
-        {...formItemLayout}
-        onFinish={onFinish}
-        onFinishFailed={onFailed}
-        fields={getDefaultFields()}
-      >
+      <Form {...formItemLayout} onFinish={onFinish} onFinishFailed={onFailed} fields={getDefaultFields()}>
         <Form.Item label="书名" name="name" rules={[{ required: true, message: '请输入书名!' }]}>
           <Input />
         </Form.Item>
@@ -132,6 +126,10 @@ const BookForm = ({ initialBook, onSubmit }) => {
         </Form.Item>
 
         <Form.Item label="封面图" name="coverImage">
+          <ImageUploader />
+        </Form.Item>
+
+        <Form.Item label="轮播图" name="poster">
           <ImageUploader />
         </Form.Item>
 

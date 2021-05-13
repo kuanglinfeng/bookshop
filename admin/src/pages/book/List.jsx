@@ -13,7 +13,6 @@ const { baseURL } = config;
 const tempCoverImage = 'https://www.china-journal.net/uploads/qkimg/15659379685d565130b32a4.jpg';
 
 function List() {
-
   const history = useHistory();
   const [books, setBooks] = useState();
   const [pageInfo, setPageInfo] = useState({ page: 1, pageSize: 10, total: 0 });
@@ -56,7 +55,7 @@ function List() {
       dataIndex: 'publishDate',
       key: 'publishDate',
       render(date) {
-        return <span>{ dayjs(date).format('YYYY年MM月DD日') }</span>;
+        return <span>{dayjs(date).format('YYYY年MM月DD日')}</span>;
       },
     },
     {
@@ -99,8 +98,16 @@ function List() {
       dataIndex: 'isAdded',
       key: 'isAdded',
       render(isAdded, record) {
-        return <Switch checked={isAdded} onChange={() => handleAddedSwitch(record, !isAdded)} />
-      }
+        return <Switch checked={isAdded} onChange={() => handleAddedSwitch(record, !isAdded)} />;
+      },
+    },
+    {
+      title: '是否轮播',
+      dataIndex: 'poster',
+      key: 'poster',
+      render(isAdded, record) {
+        return <Switch checked={Boolean(isAdded)} disabled />;
+      },
     },
     {
       title: '操作',
@@ -118,7 +125,9 @@ function List() {
 
         return (
           <>
-            <Button type="primary" onClick={() => goToEditPage(record._id)}>编辑</Button>
+            <Button type="primary" onClick={() => goToEditPage(record._id)}>
+              编辑
+            </Button>
             <Popconfirm title="确定删除这本书吗？" onConfirm={handleConfirm} okText="是" cancelText="否">
               <Button type="danger">删除</Button>
             </Popconfirm>
@@ -130,19 +139,21 @@ function List() {
 
   const goToEditPage = (id) => {
     history.push(`/book/edit/${id}`);
-  }
+  };
 
   const handleAddedSwitch = async (record, status) => {
     try {
-      setBooks(produce(books, (draftBooks) => {
-        draftBooks.find(book => book._id === record._id).isAdded = status;
-      }));
+      setBooks(
+        produce(books, (draftBooks) => {
+          draftBooks.find((book) => book._id === record._id).isAdded = status;
+        }),
+      );
       await api.putAddedStatus(record, status);
       message.success(`${status ? '上' : '下'}架成功！`);
     } catch (error) {
       message.success(`${status ? '上' : '下'}架失败！`);
     }
-  }
+  };
 
   const handleChange = async (pagination) => {
     const { current: page, pageSize } = pagination;

@@ -20,7 +20,7 @@ class ImageUploader extends React.Component {
         <div>点击上传</div>
       </div>
     );
-  }
+  };
 
   getFileList = () => {
     const fileName = this.props.value;
@@ -35,7 +35,7 @@ class ImageUploader extends React.Component {
       ];
     }
     return [];
-  }
+  };
 
   handleUploadRequest = async (p) => {
     let formData = new FormData();
@@ -52,21 +52,20 @@ class ImageUploader extends React.Component {
         this.props.onChange(response.data);
       }
     }
-  }
+  };
 
   handleImageDelete = async () => {
     const { value, onChange } = this.props;
     try {
-      await axios.delete(`/api/admin/upload/${value}`);
+      await axios.delete(`/api/upload/${value}`);
       onChange && onChange('');
       message.success('删除成功！');
     } catch (error) {
       message.error('网络错误，删除失败！');
     }
-  }
+  };
 
   render() {
-
     const { value: fileName } = this.props;
     const { isModalSeen } = this.state;
 
@@ -75,7 +74,7 @@ class ImageUploader extends React.Component {
         <Upload
           action={baseURL + uploadImageURL}
           name={uploadImageKey}
-          accept=".jpg, .png, .gif"
+          accept=".jpg, .png, .jpeg, .gif"
           listType="picture-card"
           fileList={this.getFileList()}
           customRequest={this.handleUploadRequest}
@@ -98,6 +97,6 @@ ImageUploader.propTypes = {
   // value是文件名
   value: PropTypes.string,
   onChange: PropTypes.func,
-}
+};
 
 export default ImageUploader;

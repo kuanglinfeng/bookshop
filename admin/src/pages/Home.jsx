@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, Link, NavLink, useHistory, Redirect } from 'react-router-dom';
-import { Layout, Menu, Button, Popconfirm } from 'antd';
-import { UnorderedListOutlined, FormOutlined, UserOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import { Layout, Menu, Button, Popconfirm } from 'antd';
+import { UnorderedListOutlined, FormOutlined, UserOutlined, FileTextOutlined } from '@ant-design/icons';
+import api from 'api';
 import List from 'pages/book/List';
 import Add from 'pages/book/Add';
 import Edit from 'pages/book/Edit';
-import api from 'api';
-import Loading from 'components/Loading';
+import OrderList from 'pages/OrderList';
 
 const { Sider, Content, Header } = Layout;
 
@@ -45,6 +45,9 @@ const Container = styled.div`
     color: #fff;
     margin: 0 10px;
   }
+  .loading {
+    margin-top: 200px;
+  }
 `;
 
 function Home() {
@@ -69,23 +72,21 @@ function Home() {
     logout();
   }
   
-  const cancel = (e) => {
-  }
+  if (!admin) return null;
 
-  if (!admin) return <Loading />;
+  const { name } = admin;
 
   return (
     <Container>
       <Layout>
         <Header className='header'>
-          <NavLink to='/' >小熊书店后台管理系统</NavLink>
+          <NavLink to='/' >极客书店后台管理系统</NavLink>
           <div>
             <UserOutlined className="admin-icon" />
-            <span className='admin'>{admin.name}</span>
+            <span className='admin'>{name}</span>
             <Popconfirm
               title="确定注销吗？"
               onConfirm={confirm}
-              onCancel={cancel}
               okText="是的"
               cancelText="取消"
             >
@@ -101,6 +102,9 @@ function Home() {
             </Menu.Item>
             <Menu.Item key="2" icon={<FormOutlined />}>
               <Link to="/book/add">添加书籍</Link>
+            </Menu.Item>
+            <Menu.Item key="3" icon={<FileTextOutlined />}>
+              <Link to="/order">订单管理</Link>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -122,6 +126,9 @@ function Home() {
                 </Route>
                 <Route path="/book/edit/:id" exact>
                   <Edit />
+                </Route>
+                <Route path="/order" exact>
+                  <OrderList />
                 </Route>
               </Switch>
             </Content>

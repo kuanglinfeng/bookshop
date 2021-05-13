@@ -17,6 +17,8 @@ const bookSchema = new Mongoose.Schema(
     salesVolume: Number,
     // 是否上架
     isAdded: Boolean,
+    // 轮播图，如果上传了轮播图则会在首页显示
+    poster: String,
   },
   { versionKey: false },
 );

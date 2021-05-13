@@ -9,9 +9,9 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-function Loading() {
+function Loading({ className }) {
   return (
-    <Container>
+    <Container className={className}>
       <Spin tip="拼命加载中..." />
     </Container>
   );

@@ -8,10 +8,10 @@ const adminAuth = async (request, response, next) => {
     // 用token和秘钥进行解密 得到用户的id
     const decoded = jwt.verify(token, privateKey);
     request.admin = await adminManager.findById(decoded.id);
-  } catch(err) {
+  } catch (err) {
     request.admin = null;
   }
   next();
-}
+};
 
 module.exports = adminAuth;

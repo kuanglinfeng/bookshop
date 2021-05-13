@@ -1,5 +1,4 @@
-import './index.css';
-import 'antd/dist/antd.css';
+import './index.less';
 import zhCN from 'antd/lib/locale/zh_CN';
 
 import React from 'react';

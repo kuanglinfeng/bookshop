@@ -50,4 +50,22 @@ router.delete('/:id', async (request, response) => {
   }
 });
 
+router.get('/home/carousel', async (request, response) => {
+  try {
+    const result = await bookManager.getCarouselBooks();
+    serviceResponder.sendData(response, result);
+  } catch (error) {
+    serviceResponder.sendError(response, error.toString());
+  }
+});
+
+router.get('/all/books', async (request, response) => {
+  try {
+    const result = await bookManager.getAll();
+    serviceResponder.sendData(response, result);
+  } catch (error) {
+    serviceResponder.sendError(response, error.toString());
+  }
+});
+
 module.exports = router;

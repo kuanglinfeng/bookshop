@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "axios": ["node_modules/axios"]
+    }
+  }
+}

@@ -2,6 +2,7 @@ import axios from 'tools/axios';
 
 const BOOK_API_PATH = '/api/admin/book';
 const AUTH_PATH = '/api/admin/auth';
+const ORDER_PATH = '/api/order';
 
 const api = {
   async getPageBooks(page, pageSize) {
@@ -41,7 +42,15 @@ const api = {
       }
     });
     return data;
-  }
+  },
+  async getPageOrders(page, pageSize) {
+    const { data } = await axios.get(`${ORDER_PATH}?page=${page}&pageSize=${pageSize}`);
+    return data;
+  },
+  async editOrder(id, newOrder) {
+    const { data } = await axios.put(`${ORDER_PATH}/${id}`, {order: newOrder});
+    return data;
+  },
 };
 
 export default api;

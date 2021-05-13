@@ -10,9 +10,6 @@ const bookManager = {
   async edit(id, newBook) {
     await BookModel.updateOne({ _id: id }, newBook);
   },
-  async getAll() {
-    return await BookModel.find();
-  },
   async findById(id) {
     return await BookModel.findById(id);
   },
@@ -29,7 +26,7 @@ const bookManager = {
       })
         .skip((page - 1) * pageSize)
         .limit(pageSize)
-        .sort({$natural: -1});
+        .sort({ $natural: -1 });
 
       count = await BookModel.find({
         types: { $in: [reg] },
@@ -40,13 +37,19 @@ const bookManager = {
       })
         .skip((page - 1) * pageSize)
         .limit(pageSize)
-        .sort({$natural: -1});
+        .sort({ $natural: -1 });
 
       count = await BookModel.find({
         name: { $regex: reg },
       }).countDocuments();
     }
     return { count, books };
+  },
+  async getCarouselBooks() {
+    return await BookModel.find({ poster: { $ne: null },  isAdded: true });
+  },
+  async getAll() {
+    return await BookModel.find({ isAdded: true });
   },
 };
 
